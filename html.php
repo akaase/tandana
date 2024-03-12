@@ -1,6 +1,6 @@
 <?php
 require_once('db_configuration.php');
-require_once ('mpdf/mpdf.php');
+// require_once ('mpdf/mpdf.php');
 ?>
 
 <html>
@@ -217,12 +217,12 @@ $count = 0;
                     echo 
                     ' 
                     </div>
-                    <p style="page-break-after:always;"></p>
+                    <p style="page-break-after:always;"></p>;
                     ';
                     }
 
                     echo '
-                    <p style="page-break-after:always;"></p>
+                    <p style="page-break-after:always;"></p>;
                     <center>
                     ';
                     readfile("assets/pdf/back.html");

@@ -59,19 +59,16 @@ die(mysqli_error($conn));
    $num=Mysqli_num_rows($fetch);
 
         if ($num > 0) {
-            echo "<table border=2 class='artist_table' style='position:absolute; top: 350px;'>";
+            echo "<table border=2 class='artist_table' style='position:absolute; top: 450px;'>";
             echo "<tr>";
             if (isset($_SESSION['username'])) {
                 // Display the actions header only for logged-in users (assuming admins)
                 echo '<td>ACTIONS</td>';
             }
-            // Continue with other headers here
             echo '</tr>';
         
             while ($row = mysqli_fetch_row($fetch)) {
-                // Now directly inside the loop, check if $row is not null is not needed because the while loop condition handles it
                 echo "<tr>";
-                // Output your table cells here, for example:
                 echo '<td>' . $row[0] . '</td>';
                 echo '<td>'.$row[1].'</td>';       
                 echo '<td>'.$row[2].'</td>';
@@ -85,14 +82,12 @@ die(mysqli_error($conn));
                 echo '<td>'.$row[10].'</td>';
                 echo '<td>'.$row[11].'</td>'; // And so on for other fields
                 if (isset($_SESSION['username'])) {
-                    // Assuming admins are logged in and can see the edit/delete actions
                     echo '<td><a href="update_artists.php?id=' . $row[0] . '">Edit</a><a href="delete_artist.php?id=' . $row[0] . '">Delete</a></td>';
                 }
                 echo "</tr>";
             }
             echo "</table>";
         } else {
-            // Handle the case where no rows are returned
             echo "No artists found.";
         }
 //now this is the link..
