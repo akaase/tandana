@@ -6,7 +6,7 @@
     .link { 
         float:left;
         position:relative; 
-        top:900px;
+        top:700px;
     }
     #image{
         float:left;
@@ -19,7 +19,7 @@
 <body>
 <form method='get'>
 <?PHP include 'navigation.php';
-      //require_once('db_configuration.php');
+      require_once('db_configuration.php');
 if(!isset($_SESSION)) 
     { 
         session_start(); 
@@ -28,7 +28,7 @@ if(!isset($_SESSION))
 // Create connection
 //$conn = new mysqli($servername, $username, $password, $database);
 
-$conn = new mysqli("localhost","thisitz6_tandana" ,"Pittaladora!23" , "thisitz6_tana_tandana");        
+$conn = new mysqli("localhost","root" ,"" , "tandana_db");        
 if ($conn->connect_error) {
     die('Connect Error (' . $conn->connect_errno . ') '
             . $conn->connect_error);
@@ -57,61 +57,43 @@ AUTHOR3_NAME
 $fetch = mysqli_query($conn,"SELECT * FROM Artists LIMIT $startrow, 10")or
 die(mysqli_error($conn));
    $num=Mysqli_num_rows($fetch);
-        if($num>0)
-        {
-        echo "<table border=2 class='artist_table' style= \"position:absolute; top:600px;\" >";
-        echo "<tr>";
-        if(isset($_SESSION['username'])){
-        }
-        if(isset($_SESSION['username'])){
-        echo '<img src="assets/images/index_dance.png" id="image" width="100px" height="100px">';
-        $edit="update_artists.php";
-        $delete="delete_artist.php";
-        $link='<a href=$edit>Edit</a>'.'<a href=$delete>Delete</a>';
-        $row=mysqli_fetch_row($fetch);
-        echo '<td>ACTIONS</td>';
-        echo '</tr>';
-        for($i=0;$i<$num;$i++) //?id=.$row[0].
-        {
-        $row=mysqli_fetch_row($fetch);
-        echo "<tr>";
-        echo '<td>'.$row[0].'</td>';       
-        echo '<td>'.$row[1].'</td>';       
-        echo '<td>'.$row[2].'</td>';
-        echo '<td>'.$row[3].'</td>';       
-        echo '<td>'.$row[4].'</td>';       
-        echo '<td>'.$row[5].'</td>';
-        echo '<td>'.$row[6].'</td>';       
-        echo '<td>'.$row[7].'</td>';       
-        echo '<td>'.$row[8].'</td>';
-        echo '<td>'.$row[9].'</td>';
-        echo '<td>'.$row[10].'</td>';
-        echo '<td>'.$row[11].'</td>';
-        echo '<td>'.'<a href='.$edit.'?id='.$row[0].'>Edit</a>'.'<a href='.$delete.'?id='.$row[0].'>Delete</a>'.'</td>';
-        echo "</tr>";
-        }//for
-        echo"</table>";
-        }
-          //only admins can see this
-        for($i=0;$i<$num;$i++)
-        {
-        $row=mysqli_fetch_row($fetch);
-        echo "<tr>";
-        echo '<td>'.$row[0].'</td>';       
-        echo '<td>'.$row[1].'</td>';       
-        echo '<td>'.$row[2].'</td>';
-        echo '<td>'.$row[3].'</td>';       
-        echo '<td>'.$row[4].'</td>';       
-        echo '<td>'.$row[5].'</td>';
-        echo '<td>'.$row[6].'</td>';       
-        echo '<td>'.$row[7].'</td>';       
-        echo '<td>'.$row[8].'</td>';
-        echo '<td>'.$row[9].'</td>';
-        echo '<td>'.$row[10].'</td>';
-        echo '<td>'.$row[11].'</td>';
-        echo"</tr>";
-        }//for
-        echo"</table>";
+
+        if ($num > 0) {
+            echo "<table border=2 class='artist_table' style='position:absolute; top: 350px;'>";
+            echo "<tr>";
+            if (isset($_SESSION['username'])) {
+                // Display the actions header only for logged-in users (assuming admins)
+                echo '<td>ACTIONS</td>';
+            }
+            // Continue with other headers here
+            echo '</tr>';
+        
+            while ($row = mysqli_fetch_row($fetch)) {
+                // Now directly inside the loop, check if $row is not null is not needed because the while loop condition handles it
+                echo "<tr>";
+                // Output your table cells here, for example:
+                echo '<td>' . $row[0] . '</td>';
+                echo '<td>'.$row[1].'</td>';       
+                echo '<td>'.$row[2].'</td>';
+                echo '<td>'.$row[3].'</td>';       
+                echo '<td>'.$row[4].'</td>';       
+                echo '<td>'.$row[5].'</td>';
+                echo '<td>'.$row[6].'</td>';       
+                echo '<td>'.$row[7].'</td>';       
+                echo '<td>'.$row[8].'</td>';
+                echo '<td>'.$row[9].'</td>';
+                echo '<td>'.$row[10].'</td>';
+                echo '<td>'.$row[11].'</td>'; // And so on for other fields
+                if (isset($_SESSION['username'])) {
+                    // Assuming admins are logged in and can see the edit/delete actions
+                    echo '<td><a href="update_artists.php?id=' . $row[0] . '">Edit</a><a href="delete_artist.php?id=' . $row[0] . '">Delete</a></td>';
+                }
+                echo "</tr>";
+            }
+            echo "</table>";
+        } else {
+            // Handle the case where no rows are returned
+            echo "No artists found.";
         }
 //now this is the link..
 echo '<a class="link" href="'.$_SERVER['PHP_SELF'].'?startrow='.($startrow+10).'">Next</a>';

@@ -166,9 +166,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	$sql = "INSERT INTO Resources (resource_type, resource_names, publication_company, author2_name, resource_location, ISBN, publication_date, author_name,author3_name)
 	VALUES ('$resource_type', '$resource_names', '$publication_company', '$author2_name', '$resource_location', '$ISBN', '$publication_date_to_insert', '$author_name','$author3_name_to_insert')";
 
-	echo($sql);
-	echo('date is '.$publication_date);
-	echo('author3_name is '.$author3_name);
+	// echo($sql);
+	// echo('date is '.$publication_date);
+	// echo('author3_name is '.$author3_name);
 
 //Close Connection
 			if ($conn->query($sql) === TRUE) {
