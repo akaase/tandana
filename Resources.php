@@ -5,7 +5,7 @@
 <style type="text/css">
     .link {
         position:relative; 
-        top:700px;
+        top:800px;
     }
 </style>
 </head>
@@ -16,7 +16,7 @@
 // Create connection
 //$conn = new mysqli($servername, $username, $password, $database);
  
-$conn = new mysqli("localhost","thisitz6_tandana" ,"Pittaladora!23" , "thisitz6_tana_tandana");        
+$conn = new mysqli("localhost","root" ,"" , "tandana_db");        
 if ($conn->connect_error) {
     die('Connect Error (' . $conn->connect_errno . ') '
             . $conn->connect_error);
@@ -45,66 +45,45 @@ AUTHOR3_NAME
 $fetch = mysqli_query($conn,"SELECT * FROM Resources LIMIT $startrow, 10")or
 die(mysqli_error($conn));
    $num=Mysqli_num_rows($fetch);
-        if($num>0)
-        {
-        echo "<table border=2 class='artist_table' style= \"position:absolute; top:400px;\" >";
-        echo "<tr>";
-        echo '<td>ID</td>';       
-        echo '<td>RESOURCE_TYPE</td>';       
-        echo '<td>RESOURCE_NAMES</td>';
-        echo '<td>RESOURCE_LOCATION</td>';       
-        echo '<td>ISBN</td>';       
-        echo '<td>PUBLICATION_DATE</td>';
-        echo '<td>AUTHOR_NAME</td>';       
-        echo '<td>PUBLICATION_COMPANY</td>';       
-        echo '<td>AUTHOR2_NAME</td>';
-        echo '<td>AUTHOR3_NAME</td>';
-        if(isset($_SESSION['username'])){
+   if ($num > 0) {
+    echo "<table border=2 class='artist_table' style='position:absolute; top:400px;'>";
+    echo "<tr>";
+    echo '<td>ID</td>';
+    echo '<td>RESOURCE_TYPE</td>';
+    echo '<td>RESOURCE_NAMES</td>';
+    echo '<td>RESOURCE_LOCATION</td>';
+    echo '<td>ISBN</td>';
+    echo '<td>PUBLICATION_DATE</td>';
+    echo '<td>AUTHOR_NAME</td>';
+    echo '<td>PUBLICATION_COMPANY</td>';
+    echo '<td>AUTHOR2_NAME</td>';
+    echo '<td>AUTHOR3_NAME</td>';
+    if (isset($_SESSION['username'])) {
         echo '<td>ACTIONS</td>';
-        }
-        if(isset($_SESSION['username'])){
-        $edit="update_resources.php";
-        $delete="delete_resource.php";
-        $link='<a href=$edit>Edit</a>'.'<a href=$delete>Delete</a>';
-        $row=mysqli_fetch_row($fetch);
-         for($i=0;$i<$num;$i++) //?id=.$row[0].
-        {
-        $row=mysqli_fetch_row($fetch);
+    }
+
+    // Fetch and display each row of data
+    while ($row = mysqli_fetch_assoc($fetch)) {
         echo "<tr>";
-        echo '<td>'.$row[0].'</td>';       
-        echo '<td>'.$row[1].'</td>';       
-        echo '<td>'.$row[2].'</td>';
-        echo '<td>'.$row[3].'</td>';       
-        echo '<td>'.$row[4].'</td>';       
-        echo '<td>'.$row[5].'</td>';
-        echo '<td>'.$row[6].'</td>';       
-        echo '<td>'.$row[7].'</td>';       
-        echo '<td>'.$row[8].'</td>';
-        echo '<td>'.$row[9].'</td>';
-        echo '<td>'.'<a href='.$edit.'?id='.$row[0].'>Edit</a>'.'<a href='.$delete.'?id='.$row[0].'>Delete</a>'.'</td>';
+        echo '<td>' . htmlspecialchars($row['ID']) . '</td>';
+        echo '<td>' . htmlspecialchars($row['RESOURCE_TYPE']) . '</td>';
+        echo '<td>' . htmlspecialchars($row['RESOURCE_NAMES']) . '</td>';
+        echo '<td>' . htmlspecialchars($row['RESOURCE_LOCATION']) . '</td>';
+        echo '<td>' . htmlspecialchars($row['ISBN']) . '</td>';
+        echo '<td>' . htmlspecialchars($row['PUBLICATION_DATE']) . '</td>';
+        echo '<td>' . htmlspecialchars($row['AUTHOR_NAME']) . '</td>';
+        echo '<td>' . htmlspecialchars($row['PUBLICATION_COMPANY']) . '</td>';
+        echo '<td>' . htmlspecialchars($row['AUTHOR2_NAME']) . '</td>';
+        echo '<td>' . htmlspecialchars($row['AUTHOR3_NAME']) . '</td>';
+        if (isset($_SESSION['username'])) {
+            echo '<td><a href="update_resources.php?id=' . $row['ID'] . '">Edit</a> <a href="delete_resource.php?id=' . $row['ID'] . '">Delete</a></td>';
+        }
         echo "</tr>";
-        }//for
-        echo"</table>";
-        }
-          //only admins can see this
-        for($i=0;$i<$num;$i++)
-        {
-        $row=mysqli_fetch_row($fetch);
-        echo "<tr>";
-        echo '<td>'.$row[0].'</td>';       
-        echo '<td>'.$row[1].'</td>';       
-        echo '<td>'.$row[2].'</td>';
-        echo '<td>'.$row[3].'</td>';       
-        echo '<td>'.$row[4].'</td>';       
-        echo '<td>'.$row[5].'</td>';
-        echo '<td>'.$row[6].'</td>';       
-        echo '<td>'.$row[7].'</td>';       
-        echo '<td>'.$row[8].'</td>';
-        echo '<td>'.$row[9].'</td>';
-        echo"</tr>";
-        }//for
-        echo"</table>";
-        }
+    }
+    echo "</table>";
+} else {
+    echo "<p>No resources found.</p>";
+}
 //now this is the link..
 echo '<a class="link" href="'.$_SERVER['PHP_SELF'].'?startrow='.($startrow+10).'">Next</a>';
 
